@@ -148,12 +148,18 @@
             border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 16px;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .week-card:hover {
+            border-color: rgba(139, 92, 246, 0.5);
         }
 
         .week-card.active {
             border-color: var(--accent-purple);
-            box-shadow: 0 0 8px rgba(139, 92, 246, 0.2);
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.3);
+            background-color: rgba(139, 92, 246, 0.02);
         }
 
         .week-title {
@@ -174,6 +180,14 @@
         /* 每日詳細任務 */
         .daily-section {
             margin-top: 40px;
+        }
+
+        /* 週任務內容包裝容器，用來切換顯示 */
+        .week-content {
+            display: none;
+        }
+        .week-content.active {
+            display: block;
         }
 
         .day-card {
@@ -258,6 +272,7 @@
             color: var(--text-main);
             margin-top: 10px;
             resize: vertical;
+            box-sizing: border-box;
         }
 
         .section-title {
@@ -273,21 +288,23 @@
 <div class="container">
     <header>
         <h1>地政士 16 週終極特訓藍圖</h1>
-        <div class="mentor-tag">🔮 首席戰略導師系統v1.0 • 紫微天蠍大局糾錯版</div>
+        <div class="mentor-tag">🔮 首席戰略導師系統v1.1 • 自動跨週跨模組修復版</div>
     </header>
 
+    <!-- 戰略執行總進度 -->
     <div class="progress-section">
         <div class="progress-header">
-            <span style="font-weight: bold; font-size: 1.1rem;">📊 戰略執行總進度</span>
-            <span id="progress-text" style="color: var(--accent-success); font-weight: bold;">0% (0/6 天)</span>
+            <span style="font-weight: bold; font-size: 1.1rem;">📊 全網模組執行總進度</span>
+            <span id="progress-text" style="color: var(--accent-success); font-weight: bold;">0% (0/0 天)</span>
         </div>
         <div class="progress-bar-container">
             <div class="progress-bar" id="total-progress"></div>
         </div>
     </div>
 
+    <!-- 紫微全局架構圖 -->
     <div class="chart-section">
-        <div class="section-title">📊 第一頁：民法總則核心權力結構（紫微大局觀）</div>
+        <div class="section-title">📊 當前進度：民法總則核心權力結構（紫微大局觀）</div>
         <div class="tree-root">
             <div class="tree-node main">【民法總則權力結構中心】</div>
             <div class="tree-branches">
@@ -311,257 +328,375 @@
         </div>
     </div>
 
+    <!-- 16週全科分割表 -->
     <div class="daily-section">
-        <div class="section-title">🧭 16週全科特訓總體時間分割表</div>
+        <div class="section-title">🧭 16週全科特訓總體時間分割表 (點擊可手動切換視角)</div>
         <div class="weeks-grid">
-            <div class="week-card active">
-                <div class="week-title"><span>第 1 週：民法總則篇</span><span class="week-tag" style="color:#a78bfa">當前進度</span></div>
+            <div class="week-card active" id="card-w1" onclick="switchWeek(1)">
+                <div class="week-title"><span>第 1 週：民法總則篇</span><span class="week-tag" id="tag-w1" style="color:#a78bfa">當前進度</span></div>
                 <span style="font-size:0.85rem; color:var(--text-muted)">權利主體、客體、法律行為、消滅時效</span>
             </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 2 週：民法債編總論</span><span class="week-tag">民法</span></div>
+            <div class="week-card" id="card-w2" onclick="switchWeek(2)">
+                <div class="week-title"><span>第 2 週：民法債編總論</span><span class="week-tag" id="tag-w2">民法</span></div>
                 <span style="font-size:0.85rem; color:var(--text-muted)">債之發生（契約/侵權）、效力與消滅</span>
             </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 3 週：民法債編各論</span><span class="week-tag">民法</span></div>
+            <div class="week-card" id="card-w3" onclick="switchWeek(3)">
+                <div class="week-title"><span>第 3 週：民法債編各論</span><span class="week-tag" id="tag-w3">民法</span></div>
                 <span style="font-size:0.85rem; color:var(--text-muted)">買賣、租賃、委任等不動產核心契約</span>
             </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 4 週：民法物權篇</span><span class="week-tag">民法</span></div>
+            <div class="week-card" id="card-w4" onclick="switchWeek(4)">
+                <div class="week-title"><span>第 4 週：民法物權篇</span><span class="week-tag" id="tag-w4">民法</span></div>
                 <span style="font-size:0.85rem; color:var(--text-muted)">所有權、共有關係、共有物分割與他項權利</span>
             </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 5 週：親屬繼承與信託法</span><span class="week-tag">民法信託</span></div>
+            <div class="week-card" id="card-w5" onclick="switchWeek(5)">
+                <div class="week-title"><span>第 5 週：親屬繼承與信託法</span><span class="week-tag" id="tag-w5">民法信託</span></div>
                 <span style="font-size:0.85rem; color:var(--text-muted)">夫妻財產制、代位繼承與信託財產獨立性</span>
             </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 6 週：土地法及施行法</span><span class="week-tag">土地法</span></div>
+            <div class="week-card" id="card-w6" onclick="switchWeek(6)">
+                <div class="week-title"><span>第 6 週：土地法及施行法</span><span class="week-tag" id="tag-w6">土地法</span></div>
                 <span style="font-size:0.85rem; color:var(--text-muted)">地權限制、地用規範與私有土地消滅機制</span>
             </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 7 週：平均地權條例</span><span class="week-tag">土地法</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">照價收買、市地重劃、最新炒房重罰機制</span>
-            </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 8 週：土地徵收條例</span><span class="week-tag">土地法</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">徵收法定程序、補償機制與收回權時效</span>
-            </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 9 週：地政士法與相關限制</span><span class="week-tag">土地法</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">地政士權利義務、懲戒罰則與執業邊界</span>
-            </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 10 週：土地登記總則程序</span><span class="week-tag">土登</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">登記種類、收件、審查補正與駁回法定事由</span>
-            </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 11 週：權利變更登記實務</span><span class="week-tag">土登</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">買賣移轉、繼承登記與共有物分割登記</span>
-            </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 12 週：限制登記與消滅</span><span class="week-tag">土登</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">預告登記、查封、塗銷與錯誤更正程序</span>
-            </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 13 週：地籍測量實施規則</span><span class="week-tag">土登</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">土地複丈、鑑界程序與建物第一次測量</span>
-            </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 14 週：持有稅與契稅</span><span class="week-tag">土地稅</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">地價稅特別稅率、房屋稅差別稅率與契稅</span>
-            </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 15 週：土增稅與房地合一</span><span class="week-tag">土地稅</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">自用住宅優惠（一生一次/一屋）與所得稅新制</span>
-            </div>
-            <div class="week-card">
-                <div class="week-title"><span>第 16 週：遺贈稅與稽徵法</span><span class="week-tag">土地稅</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">不計入遺產總額、實物抵繳與稅捐保全</span>
-            </div>
+            <!-- 剩餘週數保留靜態展示 -->
+            <div class="week-card"><div class="week-title"><span>第 7 週：平均地權條例</span><span class="week-tag">土地法</span></div><span style="font-size:0.85rem; color:var(--text-muted)">照價收買、市地重劃、最新炒房重罰機制</span></div>
+            <div class="week-card"><div class="week-title"><span>第 8 週：土地徵收條例</span><span class="week-tag">土地法</span></div><span style="font-size:0.85rem; color:var(--text-muted)">徵收法定程序、補償機制與收回權時效</span></div>
+            <div class="week-card"><div class="week-title"><span>第 9 週：地政士法與相關限制</span><span class="week-tag">土地法</span></div><span style="font-size:0.85rem; color:var(--text-muted)">地政士權利義務、懲戒罰則與執業邊界</span></div>
+            <div class="week-card"><div class="week-title"><span>第 10 週：土地登記總則程序</span><span class="week-tag">土登</span></div><span style="font-size:0.85rem; color:var(--text-muted)">登記種類、收件、審查補正與駁回法定事由</span></div>
+            <div class="week-card"><div class="week-title"><span>第 11 週：權利變更登記實務</span><span class="week-tag">土登</span></div><span style="font-size:0.85rem; color:var(--text-muted)">買賣移轉、繼承登記與共有物分割登記</span></div>
+            <div class="week-card"><div class="week-title"><span>第 12 週：限制登記與消滅</span><span class="week-tag">土登</span></div><span style="font-size:0.85rem; color:var(--text-muted)">預告登記、查封、塗銷與錯誤更正程序</span></div>
+            <div class="week-card"><div class="week-title"><span>第 13 週：地籍測量實施規則</span><span class="week-tag">土登</span></div><span style="font-size:0.85rem; color:var(--text-muted)">土地複丈、鑑界程序與建物第一次測量</span></div>
+            <div class="week-card"><div class="week-title"><span>第 14 週：持有稅與契稅</span><span class="week-tag">土地稅</span></div><span style="font-size:0.85rem; color:var(--text-muted)">地價稅特別稅率、房屋稅差別稅率與契稅</span></div>
+            <div class="week-card"><div class="week-title"><span>第 15 週：土增稅與房地合一</span><span class="week-tag">土地稅</span></div><span style="font-size:0.85rem; color:var(--text-muted)">自用住宅優惠（一生一次/一屋）與所得稅新制</span></div>
+            <div class="week-card"><div class="week-title"><span>第 16 週：遺贈稅與稽徵法</span><span class="week-tag">土地稅</span></div><span style="font-size:0.85rem; color:var(--text-muted)">不計入遺產總額、實物抵繳與稅捐保全</span></div>
         </div>
     </div>
 
+    <!-- 每日任務區塊 -->
     <div class="daily-section">
-        <div class="section-title">🔥 戰術執行：第 1 週 每日極精煉模組</div>
-
-        <div class="day-card" id="day1-card">
-            <div class="day-header">
-                <div class="day-title">📅 週一：自然人之能力與限制</div>
-                <input type="checkbox" class="day-checkbox" id="day1-check" onchange="updateProgress()">
-            </div>
-            <p><strong>🎯 今日學習重點：</strong> 胎兒權利能力擬制、受監護/輔助宣告人之行為能力精確界限。</p>
-            <p><strong>⚖️ 核心條文：</strong> 民法第 6、7、13、15、15-1 條</p>
+        
+        <!-- ==================== 第一週內容 ==================== -->
+        <div id="content-w1" class="week-content active">
+            <div class="section-title">🔥 戰術執行：第 1 週 每日極精煉模組</div>
             
-            <div class="meta-box">
-                <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
-                <strong>第 7 條（胎兒利益保護）：</strong> 繼承不等人！法律破例保護未出生胎兒是為了避免生父在胎兒出生前猝逝，導致其喪失繼承權。但其採取「限於將來活產」的解除條件，導致胎兒出生前，他人與胎兒（由母代理）所為之財產處分效力始終處於搖擺不定的浮動空窗期。
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">📅 週一：自然人之能力與限制</div>
+                    <input type="checkbox" class="day-checkbox task-chk" data-key="w1_d1" onchange="updateProgress(true)">
+                </div>
+                <p><strong>🎯 今日學習重點：</strong> 胎兒權利能力擬制、受監護/輔助宣告人之行為能力精確界限。</p>
+                <p><strong>⚖️ 核心條文：</strong> 民法第 6、7、13、15、15-1 條</p>
+                <div class="meta-box">
+                    <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
+                    <strong>第 7 條（胎兒利益保護）：</strong> 繼承不等人！法律破例保護未出生胎兒是為了避免生父在胎兒出生前猝逝，導致其喪失繼承權。但其採取「限於將來活產」的解除條件，導致胎兒出生前，他人與胎兒（由母代理）所為之財產處分效力始終處於搖擺不定的浮動空窗期。
+                </div>
+                <div class="meta-box" style="border-left-color: var(--accent-purple); background-color: rgba(139,92,246,0.02)">
+                    <div class="meta-title" style="color: var(--accent-purple)">🚫 糾錯視角（常見錯誤答題陷阱）</div>
+                    若題目考 18 歲經允許獨立經營商號之採購行為（110年地政士考題），<strong>閱卷老師最討厭的寫法</strong>是直接斷言「18歲已成年所以皆有效」，而略過民法第13條與其營業允許之實質涵攝。
+                </div>
+                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w1_d1_note" oninput="saveNotes()"></textarea>
             </div>
 
-            <div class="meta-box" style="border-left-color: var(--accent-purple); background-color: rgba(139,92,246,0.02)">
-                <div class="meta-title" style="color: var(--accent-purple)">🚫 糾錯視角（常見錯誤答題陷阱）</div>
-                若題目考 18 歲經允許獨立經營商號之採購行為（110年地政士考題），<strong>閱卷老師最討厭的寫法</strong>是直接斷言「18歲已成年所以皆有效」，而略過民法第13條與其營業允許之實質涵攝。
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">📅 週二：瑕疵意思表示——錯誤與詐欺</div>
+                    <input type="checkbox" class="day-checkbox task-chk" data-key="w1_d2" onchange="updateProgress(true)">
+                </div>
+                <p><strong>🎯 今日學習重點：</strong> 意思表示錯誤之撤銷限制、因第三人詐欺/脅迫之撤銷要件。</p>
+                <p><strong>⚖️ 核心條文：</strong> 民法第 88、89、92 條</p>
+                <div class="meta-box">
+                    <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
+                    <strong>第 92 條（第三人詐欺限制）：</strong> 這是受害者與善意相對人的信任博弈。若相對人不知有第三人行詐，因市場交易安全大於意思自主，法律犧牲受害者。
+                </div>
+                <div class="meta-box" style="border-left-color: var(--accent-purple); background-color: rgba(139,92,246,0.02)">
+                    <div class="meta-title" style="color: var(--accent-purple)">🚫 糾錯視角（常見錯誤答題陷阱）</div>
+                    <strong>重大魔王陷阱：代理人行詐（111、113年重複大考！）。</strong> 當代理人欺騙買方，就算本人不知情，買方依然可以撤銷！因為<strong>代理人就是本人的手腳延伸，絕非第三人</strong>！誤寫成第三人直接扣25分。
+                </div>
+                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w1_d2_note" oninput="saveNotes()"></textarea>
             </div>
-            <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." id="day1-note" oninput="saveNotes()"></textarea>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">📅 週三：法律行為之效力與條件</div>
+                    <input type="checkbox" class="day-checkbox task-chk" data-key="w1_d3" onchange="updateProgress(true)">
+                </div>
+                <p><strong>🎯 今日學習重點：</strong> 強行規定違反之無效、違背公序良俗、無權處分之動態效力。</p>
+                <p><strong>⚖️ 核心條文：</strong> 民法第 71、72、111、118 條</p>
+                <div class="meta-box">
+                    <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
+                    <strong>第 118 條（無權處分）：</strong> 以自己名義賣他人財產（如偷拿權狀賣地），為尊重真正權利人的最終財產支配權，定為「效力未定」。
+                </div>
+                <div class="meta-box" style="border-left-color: var(--accent-purple); background-color: rgba(139,92,246,0.02)">
+                    <div class="meta-title" style="color: var(--accent-purple)">🚫 糾錯視角（常見錯誤答題陷阱）</div>
+                    <strong>老師最討厭的寫法：</strong> 申論題只回答「有效」或「無效」，而沒有精確寫出「在權利人承認前，該法律行為處於『效力未定』狀態」的動態法律推理。
+                </div>
+                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w1_d3_note" oninput="saveNotes()"></textarea>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">📅 週四：無權代理與表見代理</div>
+                    <input type="checkbox" class="day-checkbox task-chk" data-key="w1_d4" onchange="updateProgress(true)">
+                </div>
+                <p><strong>🎯 今日學習重點：</strong> 狹義無權代理之責任歸屬、表見代理之外觀成立要件。</p>
+                <p><strong>⚖️ 核心條文：</strong> 民法第 169、170、171 條</p>
+                <div class="meta-box">
+                    <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
+                    <strong>第 169 條（表見代理）：</strong> 本人沒授權卻要負責？因為本人容忍或製造了「讓外人信賴有授權的權狀、印章外觀」。既然你管理權利懈怠，就必須為信賴保護原則付出代價。
+                </div>
+                <div class="meta-box" style="border-left-color: var(--accent-purple); background-color: rgba(139,92,246,0.02)">
+                    <div class="meta-title" style="color: var(--accent-purple)">🚫 糾錯視角（常見錯誤答題陷阱）</div>
+                    表見代理發動的前提是相對人必須<strong>「善意且無過失」</strong>。若相對人明知或可得而知其無授權（例如代書私下察覺貓膩），法律絕不保護相對人。
+                </div>
+                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w1_d4_note" oninput="saveNotes()"></textarea>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">📅 週五：消滅時效之爆發型對比</div>
+                    <input type="checkbox" class="day-checkbox task-chk" data-key="w1_d5" onchange="updateProgress(true)">
+                </div>
+                <p><strong>🎯 今日學習重點：</strong> 一般時效與短期特別時效之區分、時效中斷之阻斷事由。</p>
+                <p><strong>⚖️ 核心條文：</strong> 民法第 125、126、127、129、139 條</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>項目</th>
+                                <th>一般時效 (125條)</th>
+                                <th>定期給付時效 (126條)</th>
+                                <th>短期特別時效 (127條)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>期間</strong></td>
+                                <td style="color:var(--accent-scorpio); font-weight:bold;">15 年</td>
+                                <td>5 年</td>
+                                <td>2 年</td>
+                            </tr>
+                            <tr>
+                                <td><strong>核心對象</strong></td>
+                                <td>一般土地移轉登記請求權</td>
+                                <td>利息、<strong>租金</strong>、贍養費</td>
+                                <td><strong>地政士/律師報酬</strong>、商品代價</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="meta-box">
+                    <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
+                    地政士報酬為什麼只有2年？法律認為日常勞務應速戰速決，不容許債權人躺在權利上睡覺。但注意！<strong>建商賣屋的「價金請求權」在實務上適用 15 年</strong>，因為不動產非商人日常反覆販售之動態「商品」，這是魔王考點。
+                </div>
+                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w1_d5_note" oninput="saveNotes()"></textarea>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">📅 週六：全模組抽考與結構化邏輯批改</div>
+                    <input type="checkbox" class="day-checkbox task-chk" data-key="w1_d6" onchange="updateProgress(true)">
+                </div>
+                <p><strong>🎯 今日學習重點：</strong> 113、114年民法總則篇考古題親自演練（高強度閉卷短時衝刺）。</p>
+                <p><strong>⚖️ 戰略導師申論核心格式：</strong></p>
+                <div style="background-color: #121214; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 0.9rem;">
+                    一、結論先行（本案中丙之移轉登記請求權有效...）<br>
+                    二、法條依據（依民法第XX條規定...）<br>
+                    三、案件涵攝（將題目中之甲與乙行為代入法條要件...）<br>
+                    四、漏洞與實務補充（最高法院XX年決議見解...）
+                </div>
+                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w1_d6_note" oninput="saveNotes()"></textarea>
+            </div>
         </div>
 
-        <div class="day-card" id="day2-card">
-            <div class="day-header">
-                <div class="day-title">📅 週二：瑕疵意思表示——錯誤與詐欺</div>
-                <input type="checkbox" class="day-checkbox" id="day2-check" onchange="updateProgress()">
+        <!-- ==================== 第二週內容 ==================== -->
+        <div id="content-w2" class="week-content">
+            <div class="section-title">🔥 戰術執行：第 2 週 每日極精煉模組</div>
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">📅 週一：債之發生要件（契約與廣告）</div>
+                    <input type="checkbox" class="day-checkbox task-chk" data-key="w2_d1" onchange="updateProgress(true)">
+                </div>
+                <p><strong>🎯 今日學習重點：</strong> 要約與要約引誘之區別、懸賞廣告之法律性質與爭點。</p>
+                <p><strong>⚖️ 核心條文：</strong> 民法第 153、154、164 條</p>
+                <div class="meta-box">
+                    <div class="meta-title">🕵️ 偵探式法理深挖</div>
+                    價目表寄送是要約，但價目陳列原則上只是要約引誘（民154）。不動產買賣廣告文字，多屬要約引誘，但消保法介入後界線已動態模糊！
+                </div>
+                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w2_d1_note" oninput="saveNotes()"></textarea>
             </div>
-            <p><strong>🎯 今日學習重點：</strong> 意思表示錯誤之撤銷限制、因第三人詐欺/脅迫之撤銷要件。</p>
-            <p><strong>⚖️ 核心條文：</strong> 民法第 88、89、92 條</p>
             
-            <div class="meta-box">
-                <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
-                <strong>第 92 條（第三人詐欺限制）：</strong> 這是受害者與善意相對人的信任博弈。若相對人不知有第三人行詐，因市場交易安全大於意思自主，法律犧牲受害者。
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">📅 週二：無因管理之利益交織</div>
+                    <input type="checkbox" class="day-checkbox task-chk" data-key="w2_d2" onchange="updateProgress(true)">
+                </div>
+                <p><strong>🎯 今日學習重點：</strong> 適法無因管理之阻卻違法與費用請求權、不適法無因管理之損害賠償。</p>
+                <p><strong>⚖️ 核心條文：</strong> 民法第 172、176、177 條</p>
+                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w2_d2_note" oninput="saveNotes()"></textarea>
             </div>
 
-            <div class="meta-box" style="border-left-color: var(--accent-purple); background-color: rgba(139,92,246,0.02)">
-                <div class="meta-title" style="color: var(--accent-purple)">🚫 糾錯視角（常見錯誤答題陷阱）</div>
-                <strong>重大魔王陷阱：代理人行詐（111、113年重複大考！）。</strong> 當代理人欺騙買方，就算本人不知情，買方依然可以撤銷！因為<strong>代理人就是本人的手腳延伸，絕非第三人</strong>！誤寫成第三人直接扣25分。
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">📅 週三：不當得利之財產流動</div>
+                    <input type="checkbox" class="day-checkbox task-chk" data-key="w2_d3" onchange="updateProgress(true)">
+                </div>
+                <p><strong>🎯 今日學習重點：</strong> 給付型與非給付型不當得利、三大不當得利返還限制（不法原因給付）。</p>
+                <p><strong>⚖️ 核心條文：</strong> 民法第 179、180、182 條</p>
+                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w2_d3_note" oninput="saveNotes()"></textarea>
             </div>
-            <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." id="day2-note" oninput="saveNotes()"></textarea>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">📅 週四：侵權行為之損害防線</div>
+                    <input type="checkbox" class="day-checkbox task-chk" data-key="w2_d4" onchange="updateProgress(true)">
+                </div>
+                <p><strong>🎯 今日學習重點：</strong> 184條三大獨立請求權基礎、僱用人責任之內部分擔。</p>
+                <p><strong>⚖️ 核心條文：</strong> 民法第 184、185、188 條</p>
+                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w2_d4_note" oninput="saveNotes()"></textarea>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">📅 週五：債務不履行與給付不能</div>
+                    <input type="checkbox" class="day-checkbox task-chk" data-key="w2_d5" onchange="updateProgress(true)">
+                </div>
+                <p><strong>🎯 今日學習重點：</strong> 給付不能（自始/嗣後、可歸責）、給付遲延與不完全給付。</p>
+                <p><strong>⚖️ 核心條文：</strong> 民法第 225、226、227、231 條</p>
+                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w2_d5_note" oninput="saveNotes()"></textarea>
+            </div>
+
+            <div class="day-card">
+                <div class="day-header">
+                    <div class="day-title">📅 週六：全模組抽考與結構化邏輯批改</div>
+                    <input type="checkbox" class="day-checkbox task-chk" data-key="w2_d6" onchange="updateProgress(true)">
+                </div>
+                <p><strong>🎯 今日學習重點：</strong> 112、114年民法債編總論篇考古題親自演練。</p>
+                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w2_d6_note" oninput="saveNotes()"></textarea>
+            </div>
         </div>
 
-        <div class="day-card" id="day3-card">
-            <div class="day-header">
-                <div class="day-title">📅 週三：法律行為之效力與條件</div>
-                <input type="checkbox" class="day-checkbox" id="day3-check" onchange="updateProgress()">
-            </div>
-            <p><strong>🎯 今日學習重點：</strong> 強行規定違反之無效、違背公序良俗、無權處分之動態效力。</p>
-            <p><strong>⚖️ 核心條文：</strong> 民法第 71..72、111、118 條</p>
-            
-            <div class="meta-box">
-                <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
-                <strong>第 118 條（無權處分）：</strong> 以自己名義賣他人財產（如偷拿權狀賣地），為尊重真正權利人的最終財產支配權，定為「效力未定」。
-            </div>
-
-            <div class="meta-box" style="border-left-color: var(--accent-purple); background-color: rgba(139,92,246,0.02)">
-                <div class="meta-title" style="color: var(--accent-purple)">🚫 糾錯視角（常見錯誤答題陷阱）</div>
-                <strong>老師最討厭的寫法：</strong> 申論題只回答「有效」或「無效」，而沒有精確寫出「在權利人承認前，該法律行為處於『效力未定』狀態」的動態法律推理。
-            </div>
-            <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." id="day3-note" oninput="saveNotes()"></textarea>
-        </div>
-
-        <div class="day-card" id="day4-card">
-            <div class="day-header">
-                <div class="day-title">📅 週四：無權代理與表見代理</div>
-                <input type="checkbox" class="day-checkbox" id="day4-check" onchange="updateProgress()">
-            </div>
-            <p><strong>🎯 今日學習重點：</strong> 狹義無權代理之責任歸屬、表見代理之外觀成立要件。</p>
-            <p><strong>⚖️ 核心條文：</strong> 民法第 169、170、171 條</p>
-            
-            <div class="meta-box">
-                <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
-                <strong>第 169 條（表見代理）：</strong> 本人沒授權卻要負責？因為本人容忍或製造了「讓外人信賴有授權的權狀、印章外觀」。既然你管理權利懈怠，就必須為信賴保護原則付出代價。
-            </div>
-
-            <div class="meta-box" style="border-left-color: var(--accent-purple); background-color: rgba(139,92,246,0.02)">
-                <div class="meta-title" style="color: var(--accent-purple)">🚫 糾錯視角（常見錯誤答題陷阱）</div>
-                表見代理發動的前提是相對人必須<strong>「善意且無過失」</strong>。若相對人明知或可得而知其無授權（例如代書私下察覺貓膩），法律絕不保護相對人。
-            </div>
-            <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." id="day4-note" oninput="saveNotes()"></textarea>
-        </div>
-
-        <div class="day-card" id="day5-card">
-            <div class="day-header">
-                <div class="day-title">📅 週五：消滅時效之爆發型對比</div>
-                <input type="checkbox" class="day-checkbox" id="day5-check" onchange="updateProgress()">
-            </div>
-            <p><strong>🎯 今日學習重點：</strong> 一般時效與短期特別時效之區分、時效中斷之阻斷事由。</p>
-            <p><strong>⚖️ 核心條文：</strong> 民法第 125、126、127、129、139 條</p>
-            
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>項目</th>
-                            <th>一般時效 (125條)</th>
-                            <th>定期給付時效 (126條)</th>
-                            <th>短期特別時效 (127條)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>期間</strong></td>
-                            <td style="color:var(--accent-scorpio); font-weight:bold;">15 年</td>
-                            <td>5 年</td>
-                            <td>2 年</td>
-                        </tr>
-                        <tr>
-                            <td><strong>核心對象</strong></td>
-                            <td>一般土地移轉登記請求權</td>
-                            <td>利息、<strong>租金</strong>、贍養費</td>
-                            <td><strong>地政士/律師報酬</strong>、商品代價</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="meta-box">
-                <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
-                地政士報酬為什麼只有2年？法律認為日常勞務應速戰速決，不容許債權人躺在權利上睡覺。但注意！<strong>建商賣屋的「價金請求權」在實務上適用 15 年</strong>，因為不動產非商人日常反覆販售之動態「商品」，這是魔王考點。
-            </div>
-            <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." id="day5-note" oninput="saveNotes()"></textarea>
-        </div>
-
-        <div class="day-card" id="day6-card">
-            <div class="day-header">
-                <div class="day-title">📅 週六：全模組抽考與結構化邏輯批改</div>
-                <input type="checkbox" class="day-checkbox" id="day6-check" onchange="updateProgress()">
-            </div>
-            <p><strong>🎯 今日學習重點：</strong> 113、114年民法總則篇考古題親自演練（高強度閉卷短時衝刺）。</p>
-            <p><strong>⚖️ 戰略導師申論核心格式：</strong></p>
-            <div style="background-color: #121214; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 0.9rem;">
-                一、結論先行（本案中丙之移轉登記請求權有效...）<br>
-                二、法條依據（依民法第XX條規定...）<br>
-                三、案件涵攝（將題目中之甲與乙行為代入法條要件...）<br>
-                四、漏洞與實務補充（最高法院XX年決議見解...）
-            </div>
-            <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." id="day6-note" oninput="saveNotes()"></textarea>
-        </div>
+        <!-- ==================== 第三週至第六週（結構佔位） ==================== -->
+        <div id="content-w3" class="week-content"><div class="section-title">🔥 第 3 週：民法債編各論</div><p style="color:var(--text-muted)">高強度核心任務正在生成中... 請先切換回前兩週執行。</p></div>
+        <div id="content-w4" class="week-content"><div class="section-title">🔥 第 4 週：民法物權篇</div><p style="color:var(--text-muted)">高強度核心任務正在生成中... 請先切換回前兩週執行。</p></div>
+        <div id="content-w5" class="week-content"><div class="section-title">🔥 第 5 週：親屬繼承與信託法</div><p style="color:var(--text-muted)">高強度核心任務正在生成中... 請先切換回前兩週執行。</p></div>
+        <div id="content-w6" class="week-content"><div class="section-title">🔥 第 6 週：土地法及施行法</div><p style="color:var(--text-muted)">高強度核心任務正在生成中... 請先切換回前兩週執行。</p></div>
 
     </div>
 </div>
 
 <script>
-    // 自動載入與儲存功能
-    const totalDays = 6;
+    let currentWeek = 1;
+    const maxImplementedWeeks = 6; // 目前程式碼實作了前 6 週的結構
 
     window.onload = function() {
-        // 載入勾選狀態與筆記
-        for (let i = 1; i <= totalDays; i++) {
-            const chk = localStorage.getItem('day' + i + '_chk');
-            if (chk === 'true') {
-                document.getElementById('day' + i + '_check').checked = true;
+        // 1. 恢復所有勾選狀態
+        document.querySelectorAll('.task-chk').forEach(chk => {
+            const savedState = localStorage.getItem(chk.getAttribute('data-key'));
+            if (savedState === 'true') {
+                chk.checked = true;
             }
-            const note = localStorage.getItem('day' + i + '_note');
-            if (note) {
-                document.getElementById('day' + i + '_note').value = note;
+        });
+
+        // 2. 恢復所有筆記內容
+        document.querySelectorAll('.note-area').forEach(note => {
+            const savedNote = localStorage.getItem(note.getAttribute('data-key'));
+            if (savedNote) {
+                note.value = savedNote;
             }
+        });
+
+        // 3. 讀取上次最後檢視的週數
+        const savedWeek = localStorage.getItem('current_active_week');
+        if (savedWeek) {
+            currentWeek = parseInt(savedWeek);
         }
-        updateProgress();
+
+        // 4. 初始化更新進度表與畫面
+        updateProgress(false); // 首次載入不觸發自動跨週
+        renderActiveWeek();
     };
 
-    function updateProgress() {
+    // 更新進度條的核心邏輯
+    function updateProgress(triggerAutoJump = true) {
+        const allCheckboxes = document.querySelectorAll('.task-chk');
+        const totalTasks = allCheckboxes.length;
+        
         let checkedCount = 0;
-        for (let i = 1; i <= totalDays; i++) {
-            const isChecked = document.getElementById('day' + i + '_check').checked;
-            localStorage.setItem('day' + i + '_chk', isChecked);
-            if (isChecked) checkedCount++;
-        }
+        allCheckboxes.forEach(chk => {
+            const key = chk.getAttribute('data-key');
+            localStorage.setItem(key, chk.checked);
+            if (chk.checked) checkedCount++;
+        });
 
-        const percentage = Math.round((checkedCount / totalDays) * 100);
+        // 更新總進度 UI
+        const percentage = totalTasks > 0 ? Math.round((checkedCount / totalTasks) * 100) : 0;
         document.getElementById('total-progress').style.width = percentage + '%';
-        document.getElementById('progress-text').innerText = percentage + `% (${checkedCount}/${totalDays} 天)`;
+        document.getElementById('progress-text').innerText = `${percentage}% (${checkedCount}/${totalTasks} 任務完成)`;
+
+        // 核心特訓機制：檢查當前週數是否全部勾完
+        if (triggerAutoJump) {
+            checkCurrentWeekStatus();
+        }
     }
 
-    function saveNotes() {
-        for (let i = 1; i <= totalDays; i++) {
-            const noteVal = document.getElementById('day' + i + '_note').value;
-            localStorage.setItem('day' + i + '_note', noteVal);
+    // 檢查當前週數的任務狀態
+    function checkCurrentWeekStatus() {
+        const currentWeekContent = document.getElementById(`content-w${currentWeek}`);
+        if (!currentWeekContent) return;
+
+        const currentWeekChks = currentWeekContent.querySelectorAll('.task-chk');
+        if (currentWeekChks.length === 0) return;
+
+        let allDone = true;
+        currentWeekChks.forEach(chk => {
+            if (!chk.checked) allDone = false;
+        });
+
+        // 如果當前週數全勾完，且還有下一週可以去，就自動跳轉
+        if (allDone && currentWeek < maxImplementedWeeks) {
+            const nextWeek = currentWeek + 1;
+            alert(`⚔️ 戰報：第 ${currentWeek} 週特訓清單已 100% 破案！系統即將為您解鎖第 ${nextWeek} 週的核心戰場！`);
+            switchWeek(nextWeek);
         }
+    }
+
+    // 手動或自動切換週數畫面的控制核心
+    function switchWeek(weekNum) {
+        if (weekNum < 1 || weekNum > maxImplementedWeeks) return;
+        currentWeek = weekNum;
+        localStorage.setItem('current_active_week', currentWeek);
+        renderActiveWeek();
+    }
+
+    // 將資料渲染至畫面的 DOM 處理
+    function renderActiveWeek() {
+        // 1. 移除舊有的高亮標籤，隱藏所有週內容
+        document.querySelectorAll('.week-card').forEach(card => card.classList.remove('active'));
+        document.querySelectorAll('.week-tag').forEach(tag => {
+            if(tag.id) {
+                tag.innerText = tag.parentNode.innerText.includes('民法總則') ? '當前進度' : tag.id.replace('tag-w', 'W');
+                tag.style.color = '';
+            }
+        });
+        document.querySelectorAll('.week-content').forEach(content => content.classList.remove('active'));
+
+        // 2. 啟動目標週數的 UI
+        const activeCard = document.getElementById(`card-w${currentWeek}`);
+        const activeContent = document.getElementById(`content-w${currentWeek}`);
+        const activeTag = document.getElementById(`tag-w${currentWeek}`);
+
+        if (activeCard) activeCard.classList.add('active');
+        if (activeContent) activeContent.classList.add('active');
+        if (activeTag) {
+            activeTag.innerText = '執行中';
+            activeTag.style.color = '#a78bfa';
+        }
+    }
+
+    // 儲存筆記
+    function saveNotes() {
+        document.querySelectorAll('.note-area').forEach(note => {
+            const key = note.getAttribute('data-key');
+            localStorage.setItem(key, note.value);
+        });
     }
 </script>
 
