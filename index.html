@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>地政士 16 週終極特訓藍圖 - 首席戰略導師系統</title>
+    <title>地政士特訓 RPG 系統</title>
     <style>
         :root {
             --bg-primary: #121214;
@@ -11,692 +11,459 @@
             --text-main: #e4e4e7;
             --text-muted: #a1a1aa;
             --accent-purple: #8b5cf6;
-            --accent-purple-hover: #7c3aed;
+            --accent-gold: #fbbf24;
             --accent-scorpio: #ef4444;
             --accent-success: #10b981;
             --border-color: #2e2e33;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             background-color: var(--bg-primary);
             color: var(--text-main);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             line-height: 1.6;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1200px; margin: 0 auto; }
 
         header {
             text-align: center;
-            padding: 20px 0 40px 0;
-            border-bottom: 2px solid var(--border-color);
+            padding: 10px 0 30px 0;
         }
 
         h1 {
-            color: var(--text-main);
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 10px;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
-        }
-
-        .mentor-tag {
-            background-color: rgba(139, 92, 246, 0.1);
             color: var(--accent-purple);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            display: inline-block;
+            text-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
         }
 
-        /* 總進度區塊 */
-        .progress-section {
-            background-color: var(--bg-secondary);
+        /* RPG 角色狀態列 */
+        .status-board {
+            background: linear-gradient(145deg, #1e1e24, #151518);
+            border: 2px solid var(--accent-purple);
             border-radius: 12px;
-            padding: 24px;
-            margin-top: 30px;
-            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.2);
+            position: sticky;
+            top: 10px;
+            z-index: 100;
         }
 
-        .progress-header {
+        .status-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
         }
 
-        .progress-bar-container {
-            background-color: #2e2e33;
-            height: 12px;
-            border-radius: 6px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            background: linear-gradient(90deg, var(--accent-purple), var(--accent-scorpio));
-            height: 100%;
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-
-        /* 紫微全局架構圖 */
-        .chart-section {
-            background-color: var(--bg-secondary);
-            border-radius: 12px;
-            padding: 24px;
-            margin-top: 30px;
-            border: 1px solid var(--border-color);
-        }
-
-        .tree-root {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .tree-node {
-            background-color: #222227;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 15px 25px;
-            text-align: center;
-            min-width: 200px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-
-        .tree-node.main {
-            border-color: var(--accent-purple);
-            background-color: rgba(139, 92, 246, 0.05);
-            font-weight: bold;
-        }
-
-        .tree-branches {
-            display: flex;
-            justify-content: space-between;
-            width: 100%;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .tree-branch {
-            flex: 1;
-            min-width: 220px;
-            background-color: #1e1e24;
-            border-left: 3px solid var(--accent-purple);
-            padding: 12px;
-            border-radius: 0 8px 8px 0;
-        }
-
-        /* 16週全科分割表 */
-        .weeks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .week-card {
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 16px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .week-card:hover {
-            border-color: rgba(139, 92, 246, 0.5);
-        }
-
-        .week-card.active {
-            border-color: var(--accent-purple);
-            box-shadow: 0 0 12px rgba(139, 92, 246, 0.3);
-            background-color: rgba(139, 92, 246, 0.02);
-        }
-
-        .week-title {
+        .level-title {
+            font-size: 1.4rem;
             font-weight: bold;
             color: var(--text-main);
-            margin-bottom: 8px;
+        }
+
+        .gold-display {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--accent-gold);
             display: flex;
-            justify-content: space-between;
+            align-items: center;
+            gap: 5px;
         }
 
-        .week-tag {
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            background-color: #2a2a30;
+        .exp-container {
+            background-color: #2e2e33;
+            height: 16px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
         }
 
-        /* 每日詳細任務 */
-        .daily-section {
-            margin-top: 40px;
+        .exp-bar {
+            background: linear-gradient(90deg, #3b82f6, var(--accent-purple));
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* 週任務內容包裝容器，用來切換顯示 */
-        .week-content {
-            display: none;
+        .exp-text {
+            position: absolute;
+            top: -2px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
         }
-        .week-content.active {
-            display: block;
+
+        /* 商店系統 */
+        .shop-section {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
         }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .item-card {
+            background-color: #121214;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .item-card:hover { border-color: var(--accent-gold); }
+
+        .buy-btn {
+            background-color: transparent;
+            color: var(--accent-gold);
+            border: 1px solid var(--accent-gold);
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .buy-btn:hover { background-color: rgba(251, 191, 36, 0.1); }
+        .buy-btn:disabled { color: #555; border-color: #555; cursor: not-allowed; }
+
+        /* 週數切換與任務卡片 (沿用並強化) */
+        .weeks-grid {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .weeks-grid::-webkit-scrollbar { height: 6px; }
+        .weeks-grid::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+
+        .week-tab {
+            min-width: 120px;
+            text-align: center;
+            padding: 10px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .week-tab.active {
+            border-color: var(--accent-purple);
+            background-color: rgba(139, 92, 246, 0.1);
+            font-weight: bold;
+        }
+
+        .week-content { display: none; }
+        .week-content.active { display: block; animation: fadeIn 0.3s; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
         .day-card {
             background-color: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 20px;
+            border-left: 4px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .day-card.completed {
+            border-left-color: var(--accent-success);
+            background-color: rgba(16, 185, 129, 0.03);
+            opacity: 0.8;
         }
 
         .day-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
-        .day-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .task-title { font-size: 1.2rem; font-weight: bold; }
+        
+        .reward-tag {
+            font-size: 0.85rem;
+            background-color: #222;
+            padding: 4px 10px;
+            border-radius: 15px;
+            color: var(--accent-gold);
+            border: 1px solid #333;
         }
 
-        .day-checkbox {
-            width: 22px;
-            height: 22px;
+        .task-chk {
+            width: 24px;
+            height: 24px;
             cursor: pointer;
             accent-color: var(--accent-success);
         }
 
-        .meta-box {
-            background-color: rgba(239, 68, 68, 0.03);
-            border-left: 4px solid var(--accent-scorpio);
-            padding: 12px 16px;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 15px;
-        }
-
-        .meta-title {
-            font-weight: bold;
-            color: var(--accent-scorpio);
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            margin: 15px 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #1e1e24;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        th {
-            background-color: rgba(139, 92, 246, 0.1);
-            color: var(--text-main);
-        }
-
-        .note-area {
-            width: 100%;
-            background-color: #121214;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 10px;
-            color: var(--text-main);
-            margin-top: 10px;
-            resize: vertical;
-            box-sizing: border-box;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
-            border-left: 4px solid var(--accent-purple);
-            padding-left: 12px;
-        }
+        .section-title { font-size: 1.5rem; margin-bottom: 15px; border-left: 4px solid var(--accent-purple); padding-left: 10px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>地政士 16 週終極特訓藍圖</h1>
-        <div class="mentor-tag">🔮 首席戰略導師系統v1.1 • 自動跨週跨模組修復版</div>
+        <h1>地政士特訓 RPG 系統</h1>
     </header>
 
-    <!-- 戰略執行總進度 -->
-    <div class="progress-section">
-        <div class="progress-header">
-            <span style="font-weight: bold; font-size: 1.1rem;">📊 全網模組執行總進度</span>
-            <span id="progress-text" style="color: var(--accent-success); font-weight: bold;">0% (0/0 天)</span>
+    <!-- RPG 狀態板 -->
+    <div class="status-board">
+        <div class="status-header">
+            <div class="level-title" id="player-level">Lv.1 法理學徒</div>
+            <div class="gold-display">🪙 <span id="player-gold">0</span></div>
         </div>
-        <div class="progress-bar-container">
-            <div class="progress-bar" id="total-progress"></div>
+        <div class="exp-container">
+            <div class="exp-bar" id="exp-bar"></div>
+            <div class="exp-text" id="exp-text">0 / 100 EXP</div>
         </div>
     </div>
 
-    <!-- 紫微全局架構圖 -->
-    <div class="chart-section">
-        <div class="section-title">📊 當前進度：民法總則核心權力結構（紫微大局觀）</div>
-        <div class="tree-root">
-            <div class="tree-node main">【民法總則權力結構中心】</div>
-            <div class="tree-branches">
-                <div class="tree-branch">
-                    <strong style="color:var(--accent-purple)">👥 權利主體（誰能玩？）</strong><br>
-                    <span style="font-size:0.85rem; color:var(--text-muted)">自然人能力之爭、胎兒利益、法人範圍</span>
-                </div>
-                <div class="tree-branch">
-                    <strong style="color:var(--accent-purple)">📦 權利客體（玩什麼？）</strong><br>
-                    <span style="font-size:0.85rem; color:var(--text-muted)">動產與不動產劃分、主物與從物歸屬</span>
-                </div>
-                <div class="tree-branch">
-                    <strong style="color:var(--accent-purple)">⚡ 法律行為（怎麼玩？核心戰場）</strong><br>
-                    <span style="font-size:0.85rem; color:var(--text-muted)">意思表示瑕疵、效力未定與表見代理爭點</span>
-                </div>
-                <div class="tree-branch">
-                    <strong style="color:var(--accent-purple)">⏳ 時間限制（能玩多久？）</strong><br>
-                    <span style="font-size:0.85rem; color:var(--text-muted)">15年/5年/2年消滅時效與中斷陷阱</span>
-                </div>
+    <!-- 戰備商店 -->
+    <div class="shop-section">
+        <div class="section-title">🛒 戰備道具屋</div>
+        <div class="shop-grid">
+            <div class="item-card">
+                <h3>☕ 精神濃縮劑</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">抵銷一次因疲勞產生的進度落後焦慮。</p>
+                <button class="buy-btn" onclick="buyItem('精神濃縮劑', 50)">🪙 50 購買</button>
+            </div>
+            <div class="item-card">
+                <h3>🔮 考古題透視鏡</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">解鎖該科目隱藏的 10 年內必考熱區提示。</p>
+                <button class="buy-btn" onclick="buyItem('考古題透視鏡', 150)">🪙 150 購買</button>
+            </div>
+            <div class="item-card">
+                <h3>👑 豁免金牌</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted);">允許某日徹底休息且不帶任何罪惡感。</p>
+                <button class="buy-btn" onclick="buyItem('豁免金牌', 300)">🪙 300 購買</button>
             </div>
         </div>
     </div>
 
-    <!-- 16週全科分割表 -->
-    <div class="daily-section">
-        <div class="section-title">🧭 16週全科特訓總體時間分割表 (點擊可手動切換視角)</div>
-        <div class="weeks-grid">
-            <div class="week-card active" id="card-w1" onclick="switchWeek(1)">
-                <div class="week-title"><span>第 1 週：民法總則篇</span><span class="week-tag" id="tag-w1" style="color:#a78bfa">當前進度</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">權利主體、客體、法律行為、消滅時效</span>
-            </div>
-            <div class="week-card" id="card-w2" onclick="switchWeek(2)">
-                <div class="week-title"><span>第 2 週：民法債編總論</span><span class="week-tag" id="tag-w2">民法</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">債之發生（契約/侵權）、效力與消滅</span>
-            </div>
-            <div class="week-card" id="card-w3" onclick="switchWeek(3)">
-                <div class="week-title"><span>第 3 週：民法債編各論</span><span class="week-tag" id="tag-w3">民法</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">買賣、租賃、委任等不動產核心契約</span>
-            </div>
-            <div class="week-card" id="card-w4" onclick="switchWeek(4)">
-                <div class="week-title"><span>第 4 週：民法物權篇</span><span class="week-tag" id="tag-w4">民法</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">所有權、共有關係、共有物分割與他項權利</span>
-            </div>
-            <div class="week-card" id="card-w5" onclick="switchWeek(5)">
-                <div class="week-title"><span>第 5 週：親屬繼承與信託法</span><span class="week-tag" id="tag-w5">民法信託</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">夫妻財產制、代位繼承與信託財產獨立性</span>
-            </div>
-            <div class="week-card" id="card-w6" onclick="switchWeek(6)">
-                <div class="week-title"><span>第 6 週：土地法及施行法</span><span class="week-tag" id="tag-w6">土地法</span></div>
-                <span style="font-size:0.85rem; color:var(--text-muted)">地權限制、地用規範與私有土地消滅機制</span>
-            </div>
-            <!-- 剩餘週數保留靜態展示 -->
-            <div class="week-card"><div class="week-title"><span>第 7 週：平均地權條例</span><span class="week-tag">土地法</span></div><span style="font-size:0.85rem; color:var(--text-muted)">照價收買、市地重劃、最新炒房重罰機制</span></div>
-            <div class="week-card"><div class="week-title"><span>第 8 週：土地徵收條例</span><span class="week-tag">土地法</span></div><span style="font-size:0.85rem; color:var(--text-muted)">徵收法定程序、補償機制與收回權時效</span></div>
-            <div class="week-card"><div class="week-title"><span>第 9 週：地政士法與相關限制</span><span class="week-tag">土地法</span></div><span style="font-size:0.85rem; color:var(--text-muted)">地政士權利義務、懲戒罰則與執業邊界</span></div>
-            <div class="week-card"><div class="week-title"><span>第 10 週：土地登記總則程序</span><span class="week-tag">土登</span></div><span style="font-size:0.85rem; color:var(--text-muted)">登記種類、收件、審查補正與駁回法定事由</span></div>
-            <div class="week-card"><div class="week-title"><span>第 11 週：權利變更登記實務</span><span class="week-tag">土登</span></div><span style="font-size:0.85rem; color:var(--text-muted)">買賣移轉、繼承登記與共有物分割登記</span></div>
-            <div class="week-card"><div class="week-title"><span>第 12 週：限制登記與消滅</span><span class="week-tag">土登</span></div><span style="font-size:0.85rem; color:var(--text-muted)">預告登記、查封、塗銷與錯誤更正程序</span></div>
-            <div class="week-card"><div class="week-title"><span>第 13 週：地籍測量實施規則</span><span class="week-tag">土登</span></div><span style="font-size:0.85rem; color:var(--text-muted)">土地複丈、鑑界程序與建物第一次測量</span></div>
-            <div class="week-card"><div class="week-title"><span>第 14 週：持有稅與契稅</span><span class="week-tag">土地稅</span></div><span style="font-size:0.85rem; color:var(--text-muted)">地價稅特別稅率、房屋稅差別稅率與契稅</span></div>
-            <div class="week-card"><div class="week-title"><span>第 15 週：土增稅與房地合一</span><span class="week-tag">土地稅</span></div><span style="font-size:0.85rem; color:var(--text-muted)">自用住宅優惠（一生一次/一屋）與所得稅新制</span></div>
-            <div class="week-card"><div class="week-title"><span>第 16 週：遺贈稅與稽徵法</span><span class="week-tag">土地稅</span></div><span style="font-size:0.85rem; color:var(--text-muted)">不計入遺產總額、實物抵繳與稅捐保全</span></div>
-        </div>
+    <!-- 週數導航 -->
+    <div class="weeks-grid">
+        <div class="week-tab active" id="tab-w1" onclick="switchWeek(1)">W1 民法總則</div>
+        <div class="week-tab" id="tab-w2" onclick="switchWeek(2)">W2 債編總論</div>
+        <div class="week-tab" id="tab-w5" onclick="switchWeek(5)">W5 繼承與信託</div>
     </div>
 
-    <!-- 每日任務區塊 -->
-    <div class="daily-section">
+    <!-- 任務清單區 -->
+    <div id="tasks-container">
         
-        <!-- ==================== 第一週內容 ==================== -->
+        <!-- ================= 第 1 週 ================= -->
         <div id="content-w1" class="week-content active">
-            <div class="section-title">🔥 戰術執行：第 1 週 每日極精煉模組</div>
+            <div class="day-card" id="card-w1_d1">
+                <div class="day-header">
+                    <div class="task-title">D1. 自然人之能力與限制</div>
+                    <input type="checkbox" class="task-chk" data-key="w1_d1" data-exp="20" data-gold="10" onchange="calculateRPG()">
+                </div>
+                <div class="reward-tag">難度：🌟 | 獎勵：+20 EXP, +10 🪙</div>
+                <p style="font-size:0.9rem; margin-top:10px;">重點：胎兒權利能力、行為能力精確界限 (民法6,7,13)。</p>
+            </div>
+
+            <div class="day-card" id="card-w1_d2">
+                <div class="day-header">
+                    <div class="task-title">D2. 瑕疵意思表示 (魔王關)</div>
+                    <input type="checkbox" class="task-chk" data-key="w1_d2" data-exp="40" data-gold="25" onchange="calculateRPG()">
+                </div>
+                <div class="reward-tag">難度：🌟🌟 | 獎勵：+40 EXP, +25 🪙</div>
+                <p style="font-size:0.9rem; margin-top:10px;">重點：錯誤與詐欺撤銷、代理人行詐陷阱 (民法88,92)。</p>
+            </div>
+
+            <div class="day-card" id="card-w1_d4">
+                <div class="day-header">
+                    <div class="task-title">D4. 無權代理與表見代理</div>
+                    <input type="checkbox" class="task-chk" data-key="w1_d4" data-exp="30" data-gold="15" onchange="calculateRPG()">
+                </div>
+                <div class="reward-tag">難度：🌟🌟 | 獎勵：+30 EXP, +15 🪙</div>
+                <p style="font-size:0.9rem; margin-top:10px;">重點：狹義無權代理責任、表見代理外觀要件 (民法169)。</p>
+            </div>
             
-            <div class="day-card">
+            <div class="day-card" id="card-w1_d6">
                 <div class="day-header">
-                    <div class="day-title">📅 週一：自然人之能力與限制</div>
-                    <input type="checkbox" class="day-checkbox task-chk" data-key="w1_d1" onchange="updateProgress(true)">
+                    <div class="task-title">D6. 週末閉卷申論實戰</div>
+                    <input type="checkbox" class="task-chk" data-key="w1_d6" data-exp="80" data-gold="50" onchange="calculateRPG()">
                 </div>
-                <p><strong>🎯 今日學習重點：</strong> 胎兒權利能力擬制、受監護/輔助宣告人之行為能力精確界限。</p>
-                <p><strong>⚖️ 核心條文：</strong> 民法第 6、7、13、15、15-1 條</p>
-                <div class="meta-box">
-                    <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
-                    <strong>第 7 條（胎兒利益保護）：</strong> 繼承不等人！法律破例保護未出生胎兒是為了避免生父在胎兒出生前猝逝，導致其喪失繼承權。但其採取「限於將來活產」的解除條件，導致胎兒出生前，他人與胎兒（由母代理）所為之財產處分效力始終處於搖擺不定的浮動空窗期。
-                </div>
-                <div class="meta-box" style="border-left-color: var(--accent-purple); background-color: rgba(139,92,246,0.02)">
-                    <div class="meta-title" style="color: var(--accent-purple)">🚫 糾錯視角（常見錯誤答題陷阱）</div>
-                    若題目考 18 歲經允許獨立經營商號之採購行為（110年地政士考題），<strong>閱卷老師最討厭的寫法</strong>是直接斷言「18歲已成年所以皆有效」，而略過民法第13條與其營業允許之實質涵攝。
-                </div>
-                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w1_d1_note" oninput="saveNotes()"></textarea>
-            </div>
-
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">📅 週二：瑕疵意思表示——錯誤與詐欺</div>
-                    <input type="checkbox" class="day-checkbox task-chk" data-key="w1_d2" onchange="updateProgress(true)">
-                </div>
-                <p><strong>🎯 今日學習重點：</strong> 意思表示錯誤之撤銷限制、因第三人詐欺/脅迫之撤銷要件。</p>
-                <p><strong>⚖️ 核心條文：</strong> 民法第 88、89、92 條</p>
-                <div class="meta-box">
-                    <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
-                    <strong>第 92 條（第三人詐欺限制）：</strong> 這是受害者與善意相對人的信任博弈。若相對人不知有第三人行詐，因市場交易安全大於意思自主，法律犧牲受害者。
-                </div>
-                <div class="meta-box" style="border-left-color: var(--accent-purple); background-color: rgba(139,92,246,0.02)">
-                    <div class="meta-title" style="color: var(--accent-purple)">🚫 糾錯視角（常見錯誤答題陷阱）</div>
-                    <strong>重大魔王陷阱：代理人行詐（111、113年重複大考！）。</strong> 當代理人欺騙買方，就算本人不知情，買方依然可以撤銷！因為<strong>代理人就是本人的手腳延伸，絕非第三人</strong>！誤寫成第三人直接扣25分。
-                </div>
-                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w1_d2_note" oninput="saveNotes()"></textarea>
-            </div>
-
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">📅 週三：法律行為之效力與條件</div>
-                    <input type="checkbox" class="day-checkbox task-chk" data-key="w1_d3" onchange="updateProgress(true)">
-                </div>
-                <p><strong>🎯 今日學習重點：</strong> 強行規定違反之無效、違背公序良俗、無權處分之動態效力。</p>
-                <p><strong>⚖️ 核心條文：</strong> 民法第 71、72、111、118 條</p>
-                <div class="meta-box">
-                    <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
-                    <strong>第 118 條（無權處分）：</strong> 以自己名義賣他人財產（如偷拿權狀賣地），為尊重真正權利人的最終財產支配權，定為「效力未定」。
-                </div>
-                <div class="meta-box" style="border-left-color: var(--accent-purple); background-color: rgba(139,92,246,0.02)">
-                    <div class="meta-title" style="color: var(--accent-purple)">🚫 糾錯視角（常見錯誤答題陷阱）</div>
-                    <strong>老師最討厭的寫法：</strong> 申論題只回答「有效」或「無效」，而沒有精確寫出「在權利人承認前，該法律行為處於『效力未定』狀態」的動態法律推理。
-                </div>
-                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w1_d3_note" oninput="saveNotes()"></textarea>
-            </div>
-
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">📅 週四：無權代理與表見代理</div>
-                    <input type="checkbox" class="day-checkbox task-chk" data-key="w1_d4" onchange="updateProgress(true)">
-                </div>
-                <p><strong>🎯 今日學習重點：</strong> 狹義無權代理之責任歸屬、表見代理之外觀成立要件。</p>
-                <p><strong>⚖️ 核心條文：</strong> 民法第 169、170、171 條</p>
-                <div class="meta-box">
-                    <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
-                    <strong>第 169 條（表見代理）：</strong> 本人沒授權卻要負責？因為本人容忍或製造了「讓外人信賴有授權的權狀、印章外觀」。既然你管理權利懈怠，就必須為信賴保護原則付出代價。
-                </div>
-                <div class="meta-box" style="border-left-color: var(--accent-purple); background-color: rgba(139,92,246,0.02)">
-                    <div class="meta-title" style="color: var(--accent-purple)">🚫 糾錯視角（常見錯誤答題陷阱）</div>
-                    表見代理發動的前提是相對人必須<strong>「善意且無過失」</strong>。若相對人明知或可得而知其無授權（例如代書私下察覺貓膩），法律絕不保護相對人。
-                </div>
-                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w1_d4_note" oninput="saveNotes()"></textarea>
-            </div>
-
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">📅 週五：消滅時效之爆發型對比</div>
-                    <input type="checkbox" class="day-checkbox task-chk" data-key="w1_d5" onchange="updateProgress(true)">
-                </div>
-                <p><strong>🎯 今日學習重點：</strong> 一般時效與短期特別時效之區分、時效中斷之阻斷事由。</p>
-                <p><strong>⚖️ 核心條文：</strong> 民法第 125、126、127、129、139 條</p>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>項目</th>
-                                <th>一般時效 (125條)</th>
-                                <th>定期給付時效 (126條)</th>
-                                <th>短期特別時效 (127條)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>期間</strong></td>
-                                <td style="color:var(--accent-scorpio); font-weight:bold;">15 年</td>
-                                <td>5 年</td>
-                                <td>2 年</td>
-                            </tr>
-                            <tr>
-                                <td><strong>核心對象</strong></td>
-                                <td>一般土地移轉登記請求權</td>
-                                <td>利息、<strong>租金</strong>、贍養費</td>
-                                <td><strong>地政士/律師報酬</strong>、商品代價</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="meta-box">
-                    <div class="meta-title">🕵️ 偵探式法理深挖（為什麼這樣訂 / 邏輯漏洞）</div>
-                    地政士報酬為什麼只有2年？法律認為日常勞務應速戰速決，不容許債權人躺在權利上睡覺。但注意！<strong>建商賣屋的「價金請求權」在實務上適用 15 年</strong>，因為不動產非商人日常反覆販售之動態「商品」，這是魔王考點。
-                </div>
-                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w1_d5_note" oninput="saveNotes()"></textarea>
-            </div>
-
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">📅 週六：全模組抽考與結構化邏輯批改</div>
-                    <input type="checkbox" class="day-checkbox task-chk" data-key="w1_d6" onchange="updateProgress(true)">
-                </div>
-                <p><strong>🎯 今日學習重點：</strong> 113、114年民法總則篇考古題親自演練（高強度閉卷短時衝刺）。</p>
-                <p><strong>⚖️ 戰略導師申論核心格式：</strong></p>
-                <div style="background-color: #121214; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 0.9rem;">
-                    一、結論先行（本案中丙之移轉登記請求權有效...）<br>
-                    二、法條依據（依民法第XX條規定...）<br>
-                    三、案件涵攝（將題目中之甲與乙行為代入法條要件...）<br>
-                    四、漏洞與實務補充（最高法院XX年決議見解...）
-                </div>
-                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w1_d6_note" oninput="saveNotes()"></textarea>
+                <div class="reward-tag">難度：🌟🌟🌟 | 獎勵：+80 EXP, +50 🪙</div>
+                <p style="font-size:0.9rem; margin-top:10px;">重點：全模組抽考，嚴格執行「結論、法條、涵攝」格式。</p>
             </div>
         </div>
 
-        <!-- ==================== 第二週內容 ==================== -->
+        <!-- ================= 第 2 週 ================= -->
         <div id="content-w2" class="week-content">
-            <div class="section-title">🔥 戰術執行：第 2 週 每日極精煉模組</div>
-            <div class="day-card">
+            <div class="day-card" id="card-w2_d1">
                 <div class="day-header">
-                    <div class="day-title">📅 週一：債之發生要件（契約與廣告）</div>
-                    <input type="checkbox" class="day-checkbox task-chk" data-key="w2_d1" onchange="updateProgress(true)">
+                    <div class="task-title">D1. 債之發生 (契約與廣告)</div>
+                    <input type="checkbox" class="task-chk" data-key="w2_d1" data-exp="25" data-gold="15" onchange="calculateRPG()">
                 </div>
-                <p><strong>🎯 今日學習重點：</strong> 要約與要約引誘之區別、懸賞廣告之法律性質與爭點。</p>
-                <p><strong>⚖️ 核心條文：</strong> 民法第 153、154、164 條</p>
-                <div class="meta-box">
-                    <div class="meta-title">🕵️ 偵探式法理深挖</div>
-                    價目表寄送是要約，但價目陳列原則上只是要約引誘（民154）。不動產買賣廣告文字，多屬要約引誘，但消保法介入後界線已動態模糊！
-                </div>
-                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w2_d1_note" oninput="saveNotes()"></textarea>
-            </div>
-            
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">📅 週二：無因管理之利益交織</div>
-                    <input type="checkbox" class="day-checkbox task-chk" data-key="w2_d2" onchange="updateProgress(true)">
-                </div>
-                <p><strong>🎯 今日學習重點：</strong> 適法無因管理之阻卻違法與費用請求權、不適法無因管理之損害賠償。</p>
-                <p><strong>⚖️ 核心條文：</strong> 民法第 172、176、177 條</p>
-                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w2_d2_note" oninput="saveNotes()"></textarea>
+                <div class="reward-tag">難度：🌟 | 獎勵：+25 EXP, +15 🪙</div>
+                <p style="font-size:0.9rem; margin-top:10px;">重點：要約與引誘區別、懸賞廣告 (民法153,154)。</p>
             </div>
 
-            <div class="day-card">
+            <div class="day-card" id="card-w2_d4">
                 <div class="day-header">
-                    <div class="day-title">📅 週三：不當得利之財產流動</div>
-                    <input type="checkbox" class="day-checkbox task-chk" data-key="w2_d3" onchange="updateProgress(true)">
+                    <div class="task-title">D4. 侵權行為之損害防線</div>
+                    <input type="checkbox" class="task-chk" data-key="w2_d4" data-exp="50" data-gold="30" onchange="calculateRPG()">
                 </div>
-                <p><strong>🎯 今日學習重點：</strong> 給付型與非給付型不當得利、三大不當得利返還限制（不法原因給付）。</p>
-                <p><strong>⚖️ 核心條文：</strong> 民法第 179、180、182 條</p>
-                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w2_d3_note" oninput="saveNotes()"></textarea>
-            </div>
-
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">📅 週四：侵權行為之損害防線</div>
-                    <input type="checkbox" class="day-checkbox task-chk" data-key="w2_d4" onchange="updateProgress(true)">
-                </div>
-                <p><strong>🎯 今日學習重點：</strong> 184條三大獨立請求權基礎、僱用人責任之內部分擔。</p>
-                <p><strong>⚖️ 核心條文：</strong> 民法第 184、185、188 條</p>
-                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w2_d4_note" oninput="saveNotes()"></textarea>
-            </div>
-
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">📅 週五：債務不履行與給付不能</div>
-                    <input type="checkbox" class="day-checkbox task-chk" data-key="w2_d5" onchange="updateProgress(true)">
-                </div>
-                <p><strong>🎯 今日學習重點：</strong> 給付不能（自始/嗣後、可歸責）、給付遲延與不完全給付。</p>
-                <p><strong>⚖️ 核心條文：</strong> 民法第 225、226、227、231 條</p>
-                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w2_d5_note" oninput="saveNotes()"></textarea>
-            </div>
-
-            <div class="day-card">
-                <div class="day-header">
-                    <div class="day-title">📅 週六：全模組抽考與結構化邏輯批改</div>
-                    <input type="checkbox" class="day-checkbox task-chk" data-key="w2_d6" onchange="updateProgress(true)">
-                </div>
-                <p><strong>🎯 今日學習重點：</strong> 112、114年民法債編總論篇考古題親自演練。</p>
-                <textarea class="note-area" placeholder="✍️ 填寫今日破案心得或申論優化筆記..." data-key="w2_d6_note" oninput="saveNotes()"></textarea>
+                <div class="reward-tag">難度：🌟🌟🌟 | 獎勵：+50 EXP, +30 🪙</div>
+                <p style="font-size:0.9rem; margin-top:10px;">重點：184條三大獨立請求權、僱用人責任 (民法184,188)。</p>
             </div>
         </div>
 
-        <!-- ==================== 第三週至第六週（結構佔位） ==================== -->
-        <div id="content-w3" class="week-content"><div class="section-title">🔥 第 3 週：民法債編各論</div><p style="color:var(--text-muted)">高強度核心任務正在生成中... 請先切換回前兩週執行。</p></div>
-        <div id="content-w4" class="week-content"><div class="section-title">🔥 第 4 週：民法物權篇</div><p style="color:var(--text-muted)">高強度核心任務正在生成中... 請先切換回前兩週執行。</p></div>
-        <div id="content-w5" class="week-content"><div class="section-title">🔥 第 5 週：親屬繼承與信託法</div><p style="color:var(--text-muted)">高強度核心任務正在生成中... 請先切換回前兩週執行。</p></div>
-        <div id="content-w6" class="week-content"><div class="section-title">🔥 第 6 週：土地法及施行法</div><p style="color:var(--text-muted)">高強度核心任務正在生成中... 請先切換回前兩週執行。</p></div>
+        <!-- ================= 第 5 週 ================= -->
+        <div id="content-w5" class="week-content">
+            <div class="day-card" id="card-w5_d1">
+                <div class="day-header">
+                    <div class="task-title">D1. 信託財產之獨立性</div>
+                    <input type="checkbox" class="task-chk" data-key="w5_d1" data-exp="40" data-gold="20" onchange="calculateRPG()">
+                </div>
+                <div class="reward-tag">難度：🌟🌟 | 獎勵：+40 EXP, +20 🪙</div>
+                <p style="font-size:0.9rem; margin-top:10px;">重點：信託法核心，受託人破產時信託財產不入破產財團。</p>
+            </div>
+        </div>
 
     </div>
 </div>
 
 <script>
-    let currentWeek = 1;
-    const maxImplementedWeeks = 6; // 目前程式碼實作了前 6 週的結構
+    // --- RPG 核心數據設定 ---
+    const LEVEL_THRESHOLDS = [0, 100, 250, 450, 700, 1000, 1500]; 
+    const TITLES = [
+        "Lv.0 迷途者", 
+        "Lv.1 法理學徒", 
+        "Lv.2 契約獵人", 
+        "Lv.3 物權支配者", 
+        "Lv.4 稅法精算師", 
+        "Lv.5 登記大師", 
+        "Lv.Max 地政武神"
+    ];
 
     window.onload = function() {
-        // 1. 恢復所有勾選狀態
+        // 恢復勾選狀態
         document.querySelectorAll('.task-chk').forEach(chk => {
-            const savedState = localStorage.getItem(chk.getAttribute('data-key'));
-            if (savedState === 'true') {
+            const key = chk.getAttribute('data-key');
+            if (localStorage.getItem(key) === 'true') {
                 chk.checked = true;
             }
         });
-
-        // 2. 恢復所有筆記內容
-        document.querySelectorAll('.note-area').forEach(note => {
-            const savedNote = localStorage.getItem(note.getAttribute('data-key'));
-            if (savedNote) {
-                note.value = savedNote;
-            }
-        });
-
-        // 3. 讀取上次最後檢視的週數
-        const savedWeek = localStorage.getItem('current_active_week');
-        if (savedWeek) {
-            currentWeek = parseInt(savedWeek);
-        }
-
-        // 4. 初始化更新進度表與畫面
-        updateProgress(false); // 首次載入不觸發自動跨週
-        renderActiveWeek();
+        calculateRPG();
     };
 
-    // 更新進度條的核心邏輯
-    function updateProgress(triggerAutoJump = true) {
-        const allCheckboxes = document.querySelectorAll('.task-chk');
-        const totalTasks = allCheckboxes.length;
-        
-        let checkedCount = 0;
-        allCheckboxes.forEach(chk => {
+    // --- 核心邏輯：全局重算機制 (防呆防作弊) ---
+    function calculateRPG() {
+        let totalExp = 0;
+        let earnedGold = 0;
+
+        // 1. 計算所有已打勾任務的收益，並更新卡片外觀
+        document.querySelectorAll('.task-chk').forEach(chk => {
             const key = chk.getAttribute('data-key');
+            const card = document.getElementById(`card-${key}`);
+            
+            // 存入記憶體
             localStorage.setItem(key, chk.checked);
-            if (chk.checked) checkedCount++;
-        });
 
-        // 更新總進度 UI
-        const percentage = totalTasks > 0 ? Math.round((checkedCount / totalTasks) * 100) : 0;
-        document.getElementById('total-progress').style.width = percentage + '%';
-        document.getElementById('progress-text').innerText = `${percentage}% (${checkedCount}/${totalTasks} 任務完成)`;
-
-        // 核心特訓機制：檢查當前週數是否全部勾完
-        if (triggerAutoJump) {
-            checkCurrentWeekStatus();
-        }
-    }
-
-    // 檢查當前週數的任務狀態
-    function checkCurrentWeekStatus() {
-        const currentWeekContent = document.getElementById(`content-w${currentWeek}`);
-        if (!currentWeekContent) return;
-
-        const currentWeekChks = currentWeekContent.querySelectorAll('.task-chk');
-        if (currentWeekChks.length === 0) return;
-
-        let allDone = true;
-        currentWeekChks.forEach(chk => {
-            if (!chk.checked) allDone = false;
-        });
-
-        // 如果當前週數全勾完，且還有下一週可以去，就自動跳轉
-        if (allDone && currentWeek < maxImplementedWeeks) {
-            const nextWeek = currentWeek + 1;
-            alert(`⚔️ 戰報：第 ${currentWeek} 週特訓清單已 100% 破案！系統即將為您解鎖第 ${nextWeek} 週的核心戰場！`);
-            switchWeek(nextWeek);
-        }
-    }
-
-    // 手動或自動切換週數畫面的控制核心
-    function switchWeek(weekNum) {
-        if (weekNum < 1 || weekNum > maxImplementedWeeks) return;
-        currentWeek = weekNum;
-        localStorage.setItem('current_active_week', currentWeek);
-        renderActiveWeek();
-    }
-
-    // 將資料渲染至畫面的 DOM 處理
-    function renderActiveWeek() {
-        // 1. 移除舊有的高亮標籤，隱藏所有週內容
-        document.querySelectorAll('.week-card').forEach(card => card.classList.remove('active'));
-        document.querySelectorAll('.week-tag').forEach(tag => {
-            if(tag.id) {
-                tag.innerText = tag.parentNode.innerText.includes('民法總則') ? '當前進度' : tag.id.replace('tag-w', 'W');
-                tag.style.color = '';
+            if (chk.checked) {
+                totalExp += parseInt(chk.getAttribute('data-exp'));
+                earnedGold += parseInt(chk.getAttribute('data-gold'));
+                card.classList.add('completed');
+            } else {
+                card.classList.remove('completed');
             }
         });
-        document.querySelectorAll('.week-content').forEach(content => content.classList.remove('active'));
 
-        // 2. 啟動目標週數的 UI
-        const activeCard = document.getElementById(`card-w${currentWeek}`);
-        const activeContent = document.getElementById(`content-w${currentWeek}`);
-        const activeTag = document.getElementById(`tag-w${currentWeek}`);
+        // 2. 計算已花費的金幣
+        const spentGold = parseInt(localStorage.getItem('rpg_spent_gold') || '0');
+        let currentGold = earnedGold - spentGold;
+        
+        // 確保金幣不為負
+        if (currentGold < 0) currentGold = 0; 
 
-        if (activeCard) activeCard.classList.add('active');
-        if (activeContent) activeContent.classList.add('active');
-        if (activeTag) {
-            activeTag.innerText = '執行中';
-            activeTag.style.color = '#a78bfa';
+        // 3. 計算等級
+        let currentLevel = 1;
+        let nextLevelExp = LEVEL_THRESHOLDS[1];
+        let baseExp = 0;
+
+        for (let i = 1; i < LEVEL_THRESHOLDS.length; i++) {
+            if (totalExp >= LEVEL_THRESHOLDS[i]) {
+                currentLevel = i + 1;
+            } else {
+                nextLevelExp = LEVEL_THRESHOLDS[i];
+                baseExp = LEVEL_THRESHOLDS[i-1];
+                break;
+            }
+        }
+        if (currentLevel >= TITLES.length) currentLevel = TITLES.length - 1;
+
+        // 4. 更新 UI
+        document.getElementById('player-gold').innerText = currentGold;
+        document.getElementById('player-level').innerText = TITLES[currentLevel];
+
+        // 計算進度條百分比 (當前等級的區間進度)
+        let expProgress = 100;
+        if (currentLevel < TITLES.length - 1) {
+            let expInCurrentLevel = totalExp - baseExp;
+            let expNeededForNext = nextLevelExp - baseExp;
+            expProgress = Math.floor((expInCurrentLevel / expNeededForNext) * 100);
+            document.getElementById('exp-text').innerText = `${totalExp} / ${nextLevelExp} EXP`;
+        } else {
+            document.getElementById('exp-text').innerText = `已達最高境界`;
+        }
+        
+        document.getElementById('exp-bar').style.width = `${expProgress}%`;
+    }
+
+    // --- 商店購買邏輯 ---
+    function buyItem(itemName, cost) {
+        let earnedGold = 0;
+        document.querySelectorAll('.task-chk:checked').forEach(chk => {
+            earnedGold += parseInt(chk.getAttribute('data-gold'));
+        });
+        
+        let spentGold = parseInt(localStorage.getItem('rpg_spent_gold') || '0');
+        let currentGold = earnedGold - spentGold;
+
+        if (currentGold >= cost) {
+            if(confirm(`確定要花費 ${cost} 金幣購買「${itemName}」嗎？`)) {
+                spentGold += cost;
+                localStorage.setItem('rpg_spent_gold', spentGold);
+                alert(`🎉 購買成功！已將【${itemName}】放入背包。`);
+                calculateRPG();
+            }
+        } else {
+            alert(`❌ 金幣不足！還差 ${cost - currentGold} 🪙，去解任務賺錢吧！`);
         }
     }
 
-    // 儲存筆記
-    function saveNotes() {
-        document.querySelectorAll('.note-area').forEach(note => {
-            const key = note.getAttribute('data-key');
-            localStorage.setItem(key, note.value);
-        });
+    // --- 週數切換 ---
+    function switchWeek(weekNum) {
+        document.querySelectorAll('.week-tab').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.week-content').forEach(content => content.classList.remove('active'));
+        
+        document.getElementById(`tab-w${weekNum}`).classList.add('active');
+        document.getElementById(`content-w${weekNum}`).classList.add('active');
     }
 </script>
 
